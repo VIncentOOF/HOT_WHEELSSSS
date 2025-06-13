@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HotWheels - Empowering Community Navigation</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- header -->
+        <header class="header glass-panel">
+            <div class="header-content">
+                <h1 class="app-title">
+                    <span class="icon">♿</span>
+                    HotWheels
+                </h1>
+                <div class="theme-switch">
+                    <div class="slider"></div>
+                    <button class="theme-btn light-mode active" title="Light Mode">
+                        <i class="fa-solid fa-sun"></i>
+                    </button>
+                    <button class="theme-btn dark-mode" title="Dark Mode">
+                        <i class="fa-solid fa-moon"></i>
+                    </button>
+                    <button class="theme-btn high-contrast" title="High Contrast">
+                        <i class="fa-solid fa-circle-half-stroke"></i>
+                    </button>
+                </div>
+                <p class="app-subtitle">Empowering accessible navigation for everyone</p>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <aside class="left-panel glass-panel">
+                <!-- select your profile -->
+                <section class="section">
+                    <h2 class="section-title">Select Your Profile</h2>
+                    <div class="profile-grid">
+                        <button class="profile-btn" data-profile="wheelchair">
+                            <span class="profile-icon">♿</span>
+                            <span class="profile-label">Wheelchair</span>
+                        </button>
+                        <button class="profile-btn" data-profile="cane">
+                            <span class="profile-icon">🦯</span>
+                            <span class="profile-label">Walking Aid</span>
+                        </button>
+                        <button class="profile-btn" data-profile="elderly">
+                            <span class="profile-icon">👴</span>
+                            <span class="profile-label">Elderly</span>
+                        </button>
+                        <button class="profile-btn" data-profile="stroller">
+                            <span class="profile-icon">👶</span>
+                            <span class="profile-label">Stroller</span>
+                        </button>
+                    </div>
+                </section>
+
+                <!-- find accessible route -->
+                <section class="section">
+                    <h2 class="section-title">Find Accessible Route</h2>
+                    <div class="route-form">
+                        <div class="input-group">
+                            <label for="from-location">From</label>
+                            <div class="search-input-container">
+                                <input type="text" id="from-location" placeholder="Search or click map to set start point">
+                                <div class="search-results" id="from-search-results"></div>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label for="to-location">To</label>
+                            <div class="search-input-container">
+                                <input type="text" id="to-location" placeholder="Search or click map to set destination">
+                                <div class="search-results" id="to-search-results"></div>
+                            </div>
+                        </div>
+                        <button class="primary-btn" id="find-route-btn" disabled>
+                            <span>Find Route</span>
+                        </button>
+                        <button class="secondary-btn" id="clear-route-btn">
+                            <span>Clear Route</span>
+                        </button>
+                    </div>
+                </section>
+
+                <!-- View Barriers -->
+                <section class="section">
+                    <h2 class="section-title">View Barriers</h2>
+                    <div class="barrier-filters">
+                        <label class="filter-checkbox">
+                            <input type="checkbox" id="show-barriers" checked>
+                            <span class="checkmark"></span>
+                            Show Accessibility Barriers
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" id="show-ramps" checked>
+                            <span class="checkmark"></span>
+                            Show Available Ramps
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" id="show-facilities" checked>
+                            <span class="checkmark"></span>
+                            Show Accessible Facilities
+                        </label>
+                    </div>
+                </section>
+
+                <!-- report -->
+                <section class="section">
+                    <h2 class="section-title">Report Accessibility Issue</h2>
+                    <div class="report-form">
+                        <div class="input-group">
+                            <label for="report-location">Location</label>
+                            <input type="text" id="report-location" placeholder="Click map to select location" readonly>
+                        </div>
+                        <div class="input-group">
+                            <label for="issue-type">Issue Type</label>
+                            <select id="issue-type">
+                                <option value="">Select issue type</option>
+                                <option value="no-ramp">Missing Ramp</option>
+                                <option value="blocked-path">Blocked Pathway</option>
+                                <option value="broken-lift">Broken Elevator/Lift</option>
+                                <option value="poor-lighting">Poor Lighting</option>
+                                <option value="uneven-surface">Uneven Surface</option>
+                                <option value="narrow-passage">Narrow Passage</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="issue-description">Description (Optional)</label>
+                            <textarea id="issue-description" placeholder="Provide additional details..."></textarea>
+                        </div>
+                        <button class="primary-btn" id="submit-report-btn" disabled>
+                            <span>Submit Report</span>
+                        </button>
+                    </div>
+                </section>
+            </aside>
+
+            <!-- map -->
+            <div class="right-panel">
+                <div class="map-container glass-panel">
+                    <div id="map"></div>
+
+                    <!-- legend -->
+                    <div class="map-legend glass-panel">
+                        <h3>Legend</h3>
+                        <div class="legend-item">
+                            <span class="legend-marker barrier"></span>
+                            <span>Accessibility Barriers</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-marker ramp"></span>
+                            <span>Ramps Available</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-marker facility"></span>
+                            <span>Accessible Facilities</span>
+                        </div>
+                    </div>
+
+                    <div class="mode-indicator glass-panel" id="mode-indicator">
+                        <span>Click map to set start point</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="javaskibidiscripts/skibidi.js"></script>
+    <script src="javaskibidiscripts/theme_toggler.js"></script>
+    <script src="https://kit.fontawesome.com/4b57d90043.js" crossorigin="anonymous"></script>
+</body>
+</html>
